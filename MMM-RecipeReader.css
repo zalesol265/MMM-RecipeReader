@@ -7,10 +7,10 @@
   .MMM-RecipeReader-title {
     font-size: 1.5em;
     margin-bottom: 10px;
+    margin-top: 0;
   }
   
   /* Image + ingredients container (side-by-side) */
-
   .MMM-RecipeReader-top {
     display: flex;
     justify-content: space-between;
@@ -33,15 +33,23 @@
     list-style-position: inside;
   }
 
-  @media (max-height: 800px) {
-    .MMM-RecipeReader-ingredients {
-      columns: 1;
-    }
-  }
-
   /* Instructions block */
   .MMM-RecipeReader-instructions {
     margin-top: 20px;
     font-size: 1em;
   }
   
+  .MMM-RecipeReader-scrollContainer {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+  
+  .MMM-RecipeReader-overflowMsg {
+    position: sticky;
+    top: 0;
+    background: black;
+    color: #ffcc00;
+    z-index: 1;
+    padding: 5px;
+    text-align: center;
+  }
