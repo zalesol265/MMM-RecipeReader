@@ -1,5 +1,5 @@
 
-# MMM-RecipeReader
+# 🍝 MMM-RecipeReader
 
 A [MagicMirror²](https://magicmirror.builders/) module that displays step-by-step recipes retrieved from the Spoonacular API. You can remotely submit recipe URLs via a web interface or API call.
 
@@ -12,7 +12,9 @@ A [MagicMirror²](https://magicmirror.builders/) module that displays step-by-st
 
 ## 🖼️ Preview
 
-> _(Insert a screenshot here if desired)_
+<img src="img/screenshot1.jpg" alt="Live Transcription" width="400" />
+
+> _Sample url in example from https://www.momontimeout.com/the-best-tater-tot-casserole/_
 
 ---
 
