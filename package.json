@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/zalesol265/MMM-RecipeReader#readme",
   "dependencies": {
-    "axios": "^1.10.0"
+    "axios": "^1.10.0",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0"
   }
 }

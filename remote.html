@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recipe Reader Remote</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      width:100%;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Recipe Remote Control</h1>
+
+  <input type="text" id="urlInput" placeholder="Enter recipe URL" />
+
+  <button onclick="sendRecipeUrl()">📥 Load Recipe</button>
+  <!-- <hr>
+  <button onclick="sendAction('STEP_BACK')">⬅️ Previous Step</button>
+  <button onclick="sendAction('STEP_FORWARD')">➡️ Next Step</button>
+  <button onclick="sendAction('SHOW_INGREDIENTS')">🧂 Show Ingredients</button> -->
+
+  <script>
+    const API_URL = "/recipe/control"; // localhost:8080 relative
+
+    function sendRecipeUrl() {
+      const url = document.getElementById("urlInput").value.trim();
+      if (!url) return alert("Please enter a URL.");
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "setUrl",
+          payload: { url }
+        })
+      }).then(() => alert("URL sent!"));
+    }
+
+    function sendAction(action) {
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, payload: {} })
+      }).then(() => console.log("Action sent:", action));
+    }
+  </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 Module.register("MMM-RecipeReader", {
   start() {
     this.recipe = null;
+    this.sendSocketNotification("RECIPE_READER_READY");
   },
 
   getStyles() {
@@ -8,10 +9,22 @@ Module.register("MMM-RecipeReader", {
   },
 
   socketNotificationReceived(notification, payload) {
+    if (notification === "RECIPE_READER_READY") {
+      console.log("🎯 Frontend is ready! Now I can safely send notifications."); // Needed before can send notification from node_helper (or something.... i dunno why... doesn't work without)
+    }
+
     if (notification === "RECIPE_RESULT") {
       this.recipe = payload;
       this.updateDom();
     }
+  },
+
+  notificationReceived(notification, payload) {
+
+    if (notification === "FETCH_RECIPE") {
+      this.sendSocketNotification("FETCH_RECIPE", { url: payload.url });
+    }
+
   },
 
   decodeHtmlEntities(str) {
@@ -31,7 +44,7 @@ Module.register("MMM-RecipeReader", {
 
     const { title, image, ingredients, instructions } = this.recipe;
 
-    // === Top Section (Title, Ingredients, Image) ===
+    // Top Section: title, ingredients, image
     const topContainer = document.createElement("div");
     topContainer.className = "MMM-RecipeReader-top";
 
@@ -50,7 +63,6 @@ Module.register("MMM-RecipeReader", {
       ingList.appendChild(li);
     });
     titleIng.appendChild(ingList);
-
     topContainer.appendChild(titleIng);
 
     if (image) {
@@ -60,7 +72,7 @@ Module.register("MMM-RecipeReader", {
       topContainer.appendChild(img);
     }
 
-    // === Instructions Section ===
+    // Instructions
     const instrList = document.createElement("ol");
     instrList.className = "MMM-RecipeReader-instructions";
     instructions.forEach((step) => {
@@ -69,23 +81,22 @@ Module.register("MMM-RecipeReader", {
       instrList.appendChild(li);
     });
 
-    // === Scrollable Container ===
+    // Scrollable container
     const scrollContainer = document.createElement("div");
     scrollContainer.className = "MMM-RecipeReader-scrollContainer";
     scrollContainer.appendChild(topContainer);
     scrollContainer.appendChild(instrList);
 
-    // === Overflow Warning Message ===
+    // Overflow warning
     const overflowMsg = document.createElement("div");
     overflowMsg.className = "MMM-RecipeReader-overflowMsg";
     overflowMsg.style.display = "none";
     overflowMsg.innerText = "The display cannot show the full recipe.";
 
-    // === Final Wrapper Composition ===
     wrapper.appendChild(overflowMsg);
     wrapper.appendChild(scrollContainer);
 
-    // === Overflow Detection ===
+    // Display overflow warning if needed
     setTimeout(() => {
       if (scrollContainer.scrollHeight > scrollContainer.clientHeight) {
         overflowMsg.style.display = "block";
@@ -93,11 +104,5 @@ Module.register("MMM-RecipeReader", {
     }, 100);
 
     return wrapper;
-  },
-
-  notificationReceived(notification, payload) {
-    if (notification === "FETCH_RECIPE") {
-      this.sendSocketNotification("FETCH_RECIPE", { url: payload.url });
-    }
   }
 });
